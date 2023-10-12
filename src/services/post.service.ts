@@ -24,6 +24,9 @@ export class PostService {
   public async getAllPosts(): Promise<Post[]> {
     try {
       return this.post.findMany({
+        where: {
+          published: true,
+        },
         include: {
           author: true,
         },
@@ -33,13 +36,13 @@ export class PostService {
     }
   }
 
-  public async getPostById(id: number): Promise<Post | null> {
+  public async getPostsByUser(authorId: number): Promise<Post[]> {
     try {
-      return await this.post.findUnique({
-        where: { id },
+      return await this.post.findMany({
+        where: { authorId },
       });
     } catch (error) {
-      throw new HttpException(500, 'Error fetching post');
+      throw new HttpException(500, 'Error fetching posts by user');
     }
   }
 
