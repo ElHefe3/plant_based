@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { User } from '@interfaces/users.interface';
 import { UserService } from '@services/users.service';
+import { HttpException } from '@/exceptions/httpException';
 
 export class UserController {
   public user = Container.get(UserService);
@@ -39,6 +40,12 @@ export class UserController {
   };
 
   public updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const userId = Number(req.params.id);
+
+    if (req.user.id !== userId) {
+      return next(new HttpException(403, 'You are not authorized to access this profile'));
+    }
+
     try {
       const userId = Number(req.params.id);
       const userData: User = req.body;
@@ -51,6 +58,12 @@ export class UserController {
   };
 
   public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const userId = Number(req.params.id);
+
+    if (req.user.id !== userId) {
+      return next(new HttpException(403, 'You are not authorized to access this profile'));
+    }
+
     try {
       const userId = Number(req.params.id);
       const deleteUserData: User = await this.user.deleteUser(userId);
