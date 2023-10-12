@@ -17,6 +17,7 @@ export class PostRoute implements Routes {
   private initializeRoutes() {
     // Assuming only authenticated users can create a post
     this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreatePostDto), this.postController.createPost);
+    this.router.get(`${this.path}`, AuthMiddleware, this.postController.getPosts);
 
     // Add other routes for posts as needed, e.g., get all posts, get a post by ID, etc.
   }

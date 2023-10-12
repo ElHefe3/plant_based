@@ -6,6 +6,16 @@ import { PostService } from '@/services/post.service';
 export class PostController {
   public postService = Container.get(PostService);
 
+  public getPosts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const getAllPosts: Post[] = await this.postService.getAllPosts();
+
+      res.status(200).json({ data: getAllPosts, message: 'findAll' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public createPost = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const postData: Post = req.body;

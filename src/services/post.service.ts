@@ -23,7 +23,11 @@ export class PostService {
 
   public async getAllPosts(): Promise<Post[]> {
     try {
-      return await this.post.findMany();
+      return this.post.findMany({
+        include: {
+          author: true,
+        },
+      });
     } catch (error) {
       throw new HttpException(500, 'Error fetching posts');
     }
