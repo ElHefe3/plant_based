@@ -6,6 +6,27 @@ import { PostService } from '@/services/post.service';
 export class PostController {
   public postService = Container.get(PostService);
 
+  public getPosts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const getAllPosts: Post[] = await this.postService.getAllPosts();
+
+      res.status(200).json({ data: getAllPosts, message: 'findAll' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getUserPosts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = req.user.id;
+      const getUserPosts: Post[] = await this.postService.getPostsByUser(userId);
+
+      res.status(200).json({ data: getUserPosts, message: 'findAll' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public createPost = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const postData: Post = req.body;
