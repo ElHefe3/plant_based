@@ -6,6 +6,7 @@ enum UserRole {
 
 generator client {
   provider = "prisma-client-js"
+  seed = "node prisma/seed.ts"
 }
 
 datasource db {
@@ -27,6 +28,6 @@ model User {
   email String  @unique
   name  String?
   password String
-  role String @default("USER")
+  role UserRole @default(USER)
   posts Post[]
 }
